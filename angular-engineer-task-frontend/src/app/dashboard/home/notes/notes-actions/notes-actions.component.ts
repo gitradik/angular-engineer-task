@@ -1,33 +1,45 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { debounceTime } from 'rxjs';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-notes-actions',
   templateUrl: './notes-actions.component.html',
   styleUrls: ['./notes-actions.component.scss']
 })
-export class NotesActionsComponent implements OnInit {
+export class NotesActionsComponent implements OnInit, OnDestroy {
+  readonly controlName = 'filterString';
+  destroy$ = new Subject<boolean>();
   form!: FormGroup;
 
-  @Output() changeSearch = new EventEmitter<string>();
+  @Output() changeFilter = new EventEmitter<string>();
+  @Output() create = new EventEmitter<void>();
 
   constructor() {
     this.form = new FormGroup({
-      searchValue: new FormControl(null),
+      [this.controlName]: new FormControl(null),
     });
   }
 
-  resetSearchValue() {
-    this.form.get('searchValue')!.reset();
+  getFilterStringControl(): AbstractControl {
+    return this.form.get(this.controlName)!;
+  }
+
+  resetFilterString() {
+    this.getFilterStringControl().reset();
   }
 
   ngOnInit(): void {
-    this.form.get('searchValue')!.valueChanges
+    this.getFilterStringControl().valueChanges
+      .pipe(takeUntil(this.destroy$))
       .pipe(debounceTime(300))
       .subscribe(value => {
-        this.changeSearch.emit(value);
+        this.changeFilter.emit(value);
       });
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
 }

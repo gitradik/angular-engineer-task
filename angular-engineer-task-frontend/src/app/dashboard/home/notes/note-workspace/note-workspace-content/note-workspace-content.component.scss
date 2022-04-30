@@ -1,0 +1,11 @@
+@import 'variables';
+
+.note-workspace-content {
+  padding: $standard-padding;
+  padding-top: 0;
+  height: 100%;
+
+  form {
+    height: calc(100% - $standard-padding);
+  }
+}

@@ -11,11 +11,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NotesComponent } from './notes.component';
 import { NotesListComponent } from './notes-list/notes-list.component';
-import { NotesListItemComponent } from './notes-list/notes-list-item/notes-list-item.component';
 import { NotesActionsComponent } from './notes-actions/notes-actions.component';
 import { NotesTagsComponent } from './notes-tags/notes-tags.component';
 import { NotesTagComponent } from './notes-tags/notes-tag/notes-tag.component';
 import { NoteService } from '@app/core/services/api/notes.service';
+import { NoteWorkspaceTitleComponent } from './note-workspace/note-workspace-title/note-workspace-title.component';
+import { NoteWorkspaceContentComponent } from './note-workspace/note-workspace-content/note-workspace-content.component';
 
 @NgModule({
   imports: [
@@ -36,10 +37,11 @@ import { NoteService } from '@app/core/services/api/notes.service';
   declarations: [
     NotesComponent,
     NotesListComponent,
-    NotesListItemComponent,
     NotesActionsComponent,
     NotesTagsComponent,
-    NotesTagComponent
+    NotesTagComponent,
+    NoteWorkspaceTitleComponent,
+    NoteWorkspaceContentComponent,
   ],
   providers: [NoteService]
 })

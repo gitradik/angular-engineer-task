@@ -1,8 +1,60 @@
 @import 'variables';
 
+:host {
+  width: 100%;
+
+  ::ng-deep {
+    .mat-list-base .mat-list-option.mat-list-option .mat-list-item-content {
+      padding-left: $standard-padding;
+      .mat-list-text {
+        padding: 0 !important;
+      }
+    }
+  }
+}
+
 .notes-list {
-  padding: $standard-padding;
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
 
   .notes-list-container {
+    display: flex;
+    align-items: flex-start;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+  }
+
+  mat-selection-list {
+    padding: 0;
+    width: 100%;
+    max-height: 100%;
+  }
+
+  .notes-list-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    div {
+      display: flex;
+      flex-direction: column;
+    }
+
+    span {
+      &:last-child {
+        font-size: 14px;
+      }
+    }
+  }
+
+  .notes-list-no-notes {
+    padding: $standard-padding;
   }
 }
