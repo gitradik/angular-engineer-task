@@ -12,13 +12,10 @@ mat-grid-tile {
   width: 100%;
 
   .notes-col-header {
-    border-bottom: 1px solid $color-tuna;
   }
   .notes-col-body {
-    display: flex;
+    position: relative;
     height: 100%;
-    border-bottom: 1px solid $color-tuna;
-    // background-color: blue;
   }
   .notes-col-footer {
 

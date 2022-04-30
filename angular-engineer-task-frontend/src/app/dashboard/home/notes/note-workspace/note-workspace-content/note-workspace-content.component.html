@@ -1,0 +1,8 @@
+<div class="note-workspace-content">
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline" class="max-height-container">
+      <input matInput [formControlName]="controlName" type="text">
+      <textarea matInput cdkTextareaAutosize="false" [formControlName]="controlName"></textarea>
+    </mat-form-field>
+  </form>
+</div>

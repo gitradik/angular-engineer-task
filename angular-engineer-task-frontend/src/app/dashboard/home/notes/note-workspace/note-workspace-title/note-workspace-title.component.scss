@@ -1,0 +1,9 @@
+@import 'variables';
+
+.note-workspace-title {
+  padding: $standard-padding;
+
+  mat-error {
+    font-size: 14px;
+  }
+}

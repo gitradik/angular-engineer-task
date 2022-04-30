@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { BaseAPIService } from './base-api-service.class';
+import { BaseAPIService, Response } from './base-api-service.class';
 
 export interface Note {
   id: string;
@@ -17,17 +17,46 @@ export class NoteService extends BaseAPIService {
   override errorMessage: string = 'Notes error';
 
   private notes = new BehaviorSubject<Note[]>([]);
+  private selectedNote = new BehaviorSubject<Note | null>(null);
     
   get notes$(): Observable<Note[]> {
     return this.notes.asObservable();
+  }
+  get selectedNote$(): Observable<Note | null> {
+    return this.selectedNote.asObservable();
   }
 
   constructor(override http: HttpClient) {
     super(http);
   }
 
+  setSelectedNote(id: string) {
+    const note = this.notes.getValue().find(n => n.id === id);
+    
+    if (note) {
+      this.selectedNote.next(note);
+    }
+  }
+
   fetchNotes(value?: string) {
     this.get<Note[]>(this.url, { searchValue: value || '' })
-      .subscribe(data => this.notes.next(data));
+      .subscribe(result => this.notes.next(result.data));
+  }
+
+  createNote(title: string) {
+    this.post<Note>(`${this.url}/create`, { title, content: '' }).subscribe(({ data }: Response<Note>) => {
+      this.notes.next([data].concat(this.notes.getValue()));
+    });
+  }
+
+  deleteNote(id: string) {
+    this.delete(this.url, id)
+      .subscribe(({ data: noteId }: Response<string>) => {
+        if (noteId === id) {
+          this.selectedNote.next(null);
+        }
+
+        this.notes.next(this.notes.getValue().filter((note: Note) => note.id !== noteId));
+      })
   }
 }

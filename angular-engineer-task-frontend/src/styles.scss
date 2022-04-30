@@ -37,6 +37,14 @@ $angular-engineer-task-frontend-theme: mat.define-light-theme((
 
 html, body { height: 100%; overflow: hidden; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-mat-form-field {
+
+.mat-form-field {
   width: 100%;
+}
+.mat-form-field.max-height-container,
+.mat-form-field.max-height-container .mat-form-field-infix,
+.mat-form-field.max-height-container .mat-form-field-flex,
+.mat-form-field.max-height-container .mat-form-field-wrapper,
+.mat-form-field textarea {
+  height: 100%;
 }

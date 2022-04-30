@@ -1,0 +1,12 @@
+<div class="note-workspace-title">
+  <form [formGroup]="form">
+    <mat-form-field appearance="standard">
+      <mat-label>Title</mat-label>
+      <input matInput [formControlName]="controlName" type="text">
+      <mat-error *ngIf="getControl().hasError('required')">
+        Title is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+

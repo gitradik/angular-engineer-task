@@ -4,13 +4,13 @@
       <form [formGroup]="form">
         <mat-form-field appearance="standard">
           <mat-label>Enter the string</mat-label>
-          <input matInput [formControlName]="'searchValue'" type="text">
+          <input matInput [formControlName]="controlName" type="text">
           <button
-            *ngIf="form.value.searchValue"
+            *ngIf="getFilterStringControl().value"
             matSuffix
             mat-icon-button
             color="primary"
-            (click)="resetSearchValue()"
+            (click)="resetFilterString()"
           >
             <mat-icon>close</mat-icon>
           </button>
@@ -24,6 +24,7 @@
         mat-icon-button
         color="primary"
         matTooltip="Create note"
+        (click)="create.emit()"
       >
         <mat-icon>add</mat-icon>
       </button>

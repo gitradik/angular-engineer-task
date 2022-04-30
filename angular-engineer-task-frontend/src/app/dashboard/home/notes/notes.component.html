@@ -3,24 +3,37 @@
     <div class="notes-col">
       <div class="notes-col-header">
         <app-notes-actions
-          (changeSearch)="handleChangeSearch($event)"
+          (changeFilter)="handlechangeFilter($event)"
+          (create)="handleCreateNote()"
         ></app-notes-actions>
       </div>
       <div class="notes-col-body">
-        <app-notes-list [data]="notes$"></app-notes-list>
+        <app-notes-list
+          [data]="notes$"
+          (remove)="handleRemoveNote($event)"
+          (selection)="handleSelectionNote($event)"
+        ></app-notes-list>
       </div>
-      <div class="bar-footer">
-        bar-footer
+      <div class="notes-col-footer">
+        notes-col-footer
       </div>
     </div>
   </mat-grid-tile>
   <mat-grid-tile colspan="3">
     <div class="notes-col">
       <div class="notes-col-header">
-        bar-header
+        <app-note-workspace-title
+          (change)="handleChangeNote($event)"
+          [value]="(selectedNote$ | async)?.title"
+          [disabled]="(selectedNote$ | async) === null"
+        ></app-note-workspace-title>
       </div>
       <div class="notes-col-body">
-        bar-body
+        <app-note-workspace-content
+          (change)="handleChangeNote($event)"
+          [value]="(selectedNote$ | async)?.content"
+          [disabled]="(selectedNote$ | async) === null"
+        ></app-note-workspace-content>
       </div>
     </div>
   </mat-grid-tile>
