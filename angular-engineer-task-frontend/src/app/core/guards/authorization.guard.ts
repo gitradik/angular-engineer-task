@@ -8,7 +8,7 @@ export class AuthorizationGuard implements CanActivate {
   constructor(private router: Router) {}
 
   canActivate() {
-    const canActive = true;
+    const canActive = false;
     if (canActive) {
       return true;
     } else {

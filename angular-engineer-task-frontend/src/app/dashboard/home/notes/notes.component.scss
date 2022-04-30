@@ -1,0 +1,26 @@
+@import 'variables';
+
+mat-grid-tile {
+  border: 1px solid $color-tuna;
+}
+
+.notes-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+
+  .notes-col-header {
+    border-bottom: 1px solid $color-tuna;
+  }
+  .notes-col-body {
+    display: flex;
+    height: 100%;
+    border-bottom: 1px solid $color-tuna;
+    // background-color: blue;
+  }
+  .notes-col-footer {
+
+  }
+}
