@@ -8,7 +8,7 @@ export class DashboardGuard implements CanActivate {
   constructor(private router: Router) {}
 
   canActivate() {
-    const canActive: boolean = false;
+    const canActive: boolean = true;
     if (canActive) {
       return true;
     } else {

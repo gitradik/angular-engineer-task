@@ -1,0 +1,9 @@
+<div class="notes-list">
+  <div class="notes-list-container">
+    <mat-selection-list #notes [multiple]="false">
+      <mat-list-option *ngFor="let item of data | async" [value]="item.title">
+        {{item.title}}
+      </mat-list-option>
+    </mat-selection-list>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<mat-grid-list cols="4">
+  <mat-grid-tile colspan="1">
+    <div class="notes-col">
+      <div class="notes-col-header">
+        <app-notes-actions
+          (changeSearch)="handleChangeSearch($event)"
+        ></app-notes-actions>
+      </div>
+      <div class="notes-col-body">
+        <app-notes-list [data]="notes$"></app-notes-list>
+      </div>
+      <div class="bar-footer">
+        bar-footer
+      </div>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="3">
+    <div class="notes-col">
+      <div class="notes-col-header">
+        bar-header
+      </div>
+      <div class="notes-col-body">
+        bar-body
+      </div>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>

@@ -1,0 +1,17 @@
+@import 'variables';
+
+.notes-actions {
+  padding: $standard-padding;
+
+  .notes-actions-container {
+    display: flex;
+    align-items: center;
+  }
+  .notes-action {
+    text-align: center;
+    flex-grow: 1;
+    &:first-child {
+      flex-grow: 4;
+    }
+  }
+}

@@ -1,0 +1,32 @@
+<div class="notes-actions">
+  <div class="notes-actions-container">
+    <div class="notes-action">
+      <form [formGroup]="form">
+        <mat-form-field appearance="standard">
+          <mat-label>Enter the string</mat-label>
+          <input matInput [formControlName]="'searchValue'" type="text">
+          <button
+            *ngIf="form.value.searchValue"
+            matSuffix
+            mat-icon-button
+            color="primary"
+            (click)="resetSearchValue()"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-hint>Filter notes by the entered string</mat-hint>
+        </mat-form-field>
+      </form>
+    </div>
+    <div class="notes-action">
+      <button
+        mat-mini-fab
+        mat-icon-button
+        color="primary"
+        matTooltip="Create note"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
