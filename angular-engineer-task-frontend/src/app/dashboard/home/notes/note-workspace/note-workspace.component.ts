@@ -1,6 +1,21 @@
-import { Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from "@angular/core";
-import { AbstractControl, FormControl, FormGroup, Validators } from "@angular/forms";
-import { debounceTime, Subject, takeUntil } from "rxjs";
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 
 export type WorkspaceChange = {
   value: string;
@@ -11,7 +26,7 @@ export type WorkspaceChange = {
 export class NoteWorkspace implements OnInit, OnDestroy, OnChanges {
   private destroy$ = new Subject<boolean>();
   form!: FormGroup;
-  
+
   @Input() value?: string | null;
   @Input() disabled!: boolean;
   @Output() change = new EventEmitter<WorkspaceChange>();
@@ -32,7 +47,7 @@ export class NoteWorkspace implements OnInit, OnDestroy, OnChanges {
     const changeValue = changes['value'];
     const disabled = changes['disabled'];
     const control = this.getControl();
-    const options = { emitEvent: false };  
+    const options = { emitEvent: false };
 
     control.setValue(changeValue.currentValue, options);
     if (disabled && disabled.currentValue) {
@@ -47,9 +62,9 @@ export class NoteWorkspace implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {
-    this.getControl().valueChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(value => {
+    this.getControl()
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
         this.change.emit({ value, field: this.controlName });
       });
   }

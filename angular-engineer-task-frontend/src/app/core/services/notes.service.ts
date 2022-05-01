@@ -29,7 +29,7 @@ export class NotesService extends BaseAPIService {
 
   private notes = new BehaviorSubject<Note[]>([]);
   private selectedNote = new BehaviorSubject<Note | null>(null);
-    
+
   get notes$(): Observable<Note[]> {
     return this.notes.asObservable();
   }
@@ -46,36 +46,46 @@ export class NotesService extends BaseAPIService {
   }
 
   updateNote(data: Note) {
-    this.notes.next(this.notes.value.map(n => n.id === data.id ? data : n).sort(this.sortCb));
+    this.notes.next(
+      this.notes.value
+        .map((n) => (n.id === data.id ? data : n))
+        .sort(this.sortCb)
+    );
   }
 
   setSelectedNote(id: string) {
-    const note = this.notes.getValue().find(n => n.id === id);
-    
+    const note = this.notes.getValue().find((n) => n.id === id);
+
     if (note) {
       this.selectedNote.next(note);
     }
   }
 
   fetchNotes(query: NoteQuery = { searchValue: '', tagValue: '' }) {
-    this.get<Note[]>(this.url, query)
-      .subscribe(result => this.notes.next(result.data));
+    this.get<Note[]>(this.url, query).subscribe((result) =>
+      this.notes.next(result.data)
+    );
   }
 
   createNote(title: string) {
-    this.post<Note>(`${this.url}/create`, { title, content: '' }).subscribe(({ data }: Response<Note>) => {
-      this.notes.next([data].concat(this.notes.getValue()));
-    });
+    this.post<Note>(`${this.url}/create`, { title, content: '' }).subscribe(
+      ({ data }: Response<Note>) => {
+        this.notes.next([data].concat(this.notes.getValue()));
+      }
+    );
   }
 
   deleteNote(id: string) {
-    this.delete(this.url, id)
-      .subscribe(({ data: noteId }: Response<string>) => {
+    this.delete(this.url, id).subscribe(
+      ({ data: noteId }: Response<string>) => {
         if (noteId === id) {
           this.selectedNote.next(null);
         }
 
-        this.notes.next(this.notes.getValue().filter((note: Note) => note.id !== noteId));
-      })
+        this.notes.next(
+          this.notes.getValue().filter((note: Note) => note.id !== noteId)
+        );
+      }
+    );
   }
 }

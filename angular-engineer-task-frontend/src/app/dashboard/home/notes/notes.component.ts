@@ -1,6 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject, take, takeUntil } from 'rxjs';
-import { Note, NotesService, NoteWsMessage } from '@app/core/services/notes.service';
+import {
+  Note,
+  NotesService,
+  NoteWsMessage,
+} from '@app/core/services/notes.service';
 import { WebsocketService } from '@app/core/services/websocket.service';
 import { Tag, TagsService } from '@app/core/services/tags.service';
 import { WorkspaceChange } from './note-workspace/note-workspace.component';
@@ -8,7 +12,7 @@ import { WorkspaceChange } from './note-workspace/note-workspace.component';
 @Component({
   selector: 'app-notes',
   templateUrl: './notes.component.html',
-  styleUrls: ['./notes.component.scss']
+  styleUrls: ['./notes.component.scss'],
 })
 export class NotesComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<boolean>();
@@ -28,23 +32,22 @@ export class NotesComponent implements OnInit, OnDestroy {
     this.selectedNote$ = this.notesService.selectedNote$;
     this.tags$ = this.tagsService.tags$;
     this.selectedTag$ = this.tagsService.selectedTag$;
-    this.wsService.getMessages<Note>()
+    this.wsService
+      .getMessages<Note>()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(msg => {
+      .subscribe((msg) => {
         if (msg.event === this.event) {
           this.notesService.updateNote(msg.data);
           this.tagsService.fetchTags();
         }
       });
-      this.selectedTag$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(tag => {
-          if (tag !== null) {
-            this.notesService.fetchNotes({ tagValue: tag.value });
-          } else {
-            this.notesService.fetchNotes();
-          }
-        })
+    this.selectedTag$.pipe(takeUntil(this.destroy$)).subscribe((tag) => {
+      if (tag !== null) {
+        this.notesService.fetchNotes({ tagValue: tag.value });
+      } else {
+        this.notesService.fetchNotes();
+      }
+    });
   }
 
   handlechangeFilter(value: string) {
@@ -64,8 +67,8 @@ export class NotesComponent implements OnInit, OnDestroy {
           data: {
             id: obj.id,
             field,
-            value
-          }
+            value,
+          },
         });
       }
     });

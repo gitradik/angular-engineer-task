@@ -4,7 +4,7 @@
       <form [formGroup]="form">
         <mat-form-field appearance="standard">
           <mat-label>Enter the string</mat-label>
-          <input matInput [formControlName]="controlName" type="text">
+          <input matInput [formControlName]="controlName" type="text" />
           <button
             *ngIf="getFilterStringControl().value"
             matSuffix

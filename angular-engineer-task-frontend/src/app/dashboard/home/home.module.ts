@@ -6,11 +6,7 @@ import { SharedModule } from '@app/shared';
 import { NotesModule } from './notes/notes.module';
 
 @NgModule({
-  imports: [
-    HomeRoutingModule,
-    NotesModule,
-    SharedModule,
-  ],
+  imports: [HomeRoutingModule, NotesModule, SharedModule],
   declarations: [HomeComponent],
   exports: [HomeComponent],
 })

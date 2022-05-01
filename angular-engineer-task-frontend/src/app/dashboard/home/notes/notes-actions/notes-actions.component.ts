@@ -1,11 +1,17 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-notes-actions',
   templateUrl: './notes-actions.component.html',
-  styleUrls: ['./notes-actions.component.scss']
+  styleUrls: ['./notes-actions.component.scss'],
 })
 export class NotesActionsComponent implements OnInit, OnDestroy {
   readonly controlName = 'filterString';
@@ -30,10 +36,10 @@ export class NotesActionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getFilterStringControl().valueChanges
-      .pipe(takeUntil(this.destroy$))
+    this.getFilterStringControl()
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .pipe(debounceTime(300))
-      .subscribe(value => {
+      .subscribe((value) => {
         this.changeFilter.emit(value);
       });
   }

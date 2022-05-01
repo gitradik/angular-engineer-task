@@ -5,7 +5,7 @@ import { Tag } from '@app/core/services/tags.service';
 @Component({
   selector: 'app-notes-tags',
   templateUrl: './notes-tags.component.html',
-  styleUrls: ['./notes-tags.component.scss']
+  styleUrls: ['./notes-tags.component.scss'],
 })
 export class NotesTagsComponent {
   @Input() data!: Observable<Tag[]>;

@@ -8,9 +8,8 @@ describe('NoteWorkspaceTitleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NoteWorkspaceTitleComponent ]
-    })
-    .compileComponents();
+      declarations: [NoteWorkspaceTitleComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

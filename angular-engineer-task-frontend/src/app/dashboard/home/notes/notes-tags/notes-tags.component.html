@@ -2,7 +2,11 @@
   <div class="notes-tags-container">
     <mat-chip-list>
       <ng-container *ngFor="let item of data | async as array">
-        <mat-chip [selected]="(selected | async)?.id === item.id" color="primary" (click)="handleClickTag(item.id)">
+        <mat-chip
+          [selected]="(selected | async)?.id === item.id"
+          color="primary"
+          (click)="handleClickTag(item.id)"
+        >
           {{ item.value }}
         </mat-chip>
       </ng-container>

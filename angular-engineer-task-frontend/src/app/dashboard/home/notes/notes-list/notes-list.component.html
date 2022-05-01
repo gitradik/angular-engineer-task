@@ -1,17 +1,27 @@
 <div class="notes-list">
   <div class="notes-list-container">
     <ng-container *ngIf="data | async as notes">
-      <div class="notes-list-no-notes" *ngIf="notes.length === 0; else showList">
+      <div
+        class="notes-list-no-notes"
+        *ngIf="notes.length === 0; else showList"
+      >
         No notes
       </div>
       <ng-template #showList>
-        <mat-selection-list #notesList [multiple]="false" (selectionChange)="handleSelectionChange($event)">
-          <mat-list-option *ngFor="let item of data | async as array" [value]="item.id">
+        <mat-selection-list
+          #notesList
+          [multiple]="false"
+          (selectionChange)="handleSelectionChange($event)"
+        >
+          <mat-list-option
+            *ngFor="let item of data | async as array"
+            [value]="item.id"
+          >
             <div class="notes-list-option">
               <div>
-                <span>{{item.title}}</span>
-                <span>{{item.updatedAt | date}}</span>
-              </div> 
+                <span>{{ item.title }}</span>
+                <span>{{ item.updatedAt | date }}</span>
+              </div>
               <button
                 matSuffix
                 mat-icon-button

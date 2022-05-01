@@ -34,9 +34,7 @@ import { TagsService } from '@app/core/services/tags.service';
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  exports: [
-    NotesComponent,
-  ],
+  exports: [NotesComponent],
   declarations: [
     NotesComponent,
     NotesListComponent,
@@ -45,10 +43,6 @@ import { TagsService } from '@app/core/services/tags.service';
     NoteWorkspaceTitleComponent,
     NoteWorkspaceContentComponent,
   ],
-  providers: [
-    NotesService,
-    TagsService,
-    WebsocketService
-  ]
+  providers: [NotesService, TagsService, WebsocketService],
 })
-export class NotesModule { }
+export class NotesModule {}

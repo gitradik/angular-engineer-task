@@ -1,7 +1,13 @@
 <div class="note-workspace-content">
   <form *ngIf="isFocused; else contentHTML" [formGroup]="form">
     <mat-form-field appearance="outline" class="max-height-container">
-      <textarea #textarea matInput cdkTextareaAutosize="false" [formControlName]="controlName" (blur)="blur()"></textarea>
+      <textarea
+        #textarea
+        matInput
+        cdkTextareaAutosize="false"
+        [formControlName]="controlName"
+        (blur)="blur()"
+      ></textarea>
     </mat-form-field>
   </form>
   <ng-template #contentHTML>

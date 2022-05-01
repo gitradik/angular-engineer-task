@@ -4,7 +4,7 @@ import { NoteWorkspace } from '../note-workspace.component';
 @Component({
   selector: 'app-note-workspace-content',
   templateUrl: './note-workspace-content.component.html',
-  styleUrls: ['./note-workspace-content.component.scss']
+  styleUrls: ['./note-workspace-content.component.scss'],
 })
 export class NoteWorkspaceContentComponent extends NoteWorkspace {
   @ViewChild('textarea') textarea?: ElementRef;
@@ -18,7 +18,10 @@ export class NoteWorkspaceContentComponent extends NoteWorkspace {
   getHtmlStr() {
     const str = this.getControl().value;
     if (str === null) return '';
-    return str.replace(/#(\w+)/g, '<span class="mat-chip mat-standard-chip note-workspace-tag">#$1</span>')
+    return str.replace(
+      /#(\w+)/g,
+      '<span class="mat-chip mat-standard-chip note-workspace-tag">#$1</span>'
+    );
   }
 
   focus() {

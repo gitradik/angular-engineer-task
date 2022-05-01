@@ -4,10 +4,7 @@ import { DashboardComponent } from '@app/dashboard/dashboard.component';
 import { SharedModule } from '@app/shared';
 
 @NgModule({
-  imports: [
-    DashboardRoutingModule,
-    SharedModule,
-  ],
+  imports: [DashboardRoutingModule, SharedModule],
   declarations: [DashboardComponent],
   exports: [DashboardComponent],
 })
