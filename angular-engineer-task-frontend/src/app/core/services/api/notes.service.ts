@@ -11,6 +11,12 @@ export interface Note {
   updatedAt: Date;
 }
 
+export type NoteWsMessage = {
+  id: string;
+  field: string;
+  value: string;
+};
+
 @Injectable()
 export class NoteService extends BaseAPIService {
   private readonly url = 'notes';
@@ -28,6 +34,14 @@ export class NoteService extends BaseAPIService {
 
   constructor(override http: HttpClient) {
     super(http);
+  }
+
+  private sortCb(a: Note, b: Note) {
+    return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+  }
+
+  updateNote(data: Note) {
+    this.notes.next(this.notes.value.map(n => n.id === data.id ? data : n).sort(this.sortCb));
   }
 
   setSelectedNote(id: string) {

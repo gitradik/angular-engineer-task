@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { NoteDto } from 'src/dto/note.dto';
-import { getResponse, Response } from 'src/utils/httpResponse';
+import { Response } from 'src/utils/httpResponse';
 import { NoteQuery, NoteService } from './note.service';
 
 @Controller('notes')

@@ -16,9 +16,15 @@ export class NoteWorkspace implements OnInit, OnDestroy, OnChanges {
   @Input() disabled!: boolean;
   @Output() change = new EventEmitter<WorkspaceChange>();
 
-  constructor(@Inject(String) public controlName: string, @Inject(Boolean) public isRequired: boolean) {
+  constructor(
+    @Inject(String) public controlName: string,
+    @Inject(Boolean) public isRequired: boolean
+  ) {
     this.form = new FormGroup({
-      [this.controlName]: new FormControl(this.value, isRequired ? Validators.required : null),
+      [this.controlName]: new FormControl(this.value, {
+        validators: isRequired ? Validators.required : null,
+        updateOn: 'blur',
+      }),
     });
   }
 
@@ -26,14 +32,15 @@ export class NoteWorkspace implements OnInit, OnDestroy, OnChanges {
     const changeValue = changes['value'];
     const disabled = changes['disabled'];
     const control = this.getControl();
+    const options = { emitEvent: false };  
 
     if (changeValue) {
-      control.setValue(changeValue.currentValue, { emitEvent: false });
+      control.setValue(changeValue.currentValue, options);
     }
     if (disabled && disabled.currentValue) {
-      control.disable()
+      control.disable(options);
     } else {
-      control.enable();
+      control.enable(options);
     }
   }
 
@@ -44,7 +51,6 @@ export class NoteWorkspace implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.getControl().valueChanges
       .pipe(takeUntil(this.destroy$))
-      .pipe(debounceTime(300))
       .subscribe(value => {
         this.change.emit({ value, field: this.controlName });
       });
