@@ -20,14 +20,14 @@ export const notesArr: NoteDto[] = [
   {
     id: uuidv4(),
     title: 'Lart note',
-    content: '',
+    content: 'Lorem ipsum #dolor, consectetur adipisicing elit. Unde, earum!',
     createdAt: new Date('2019-6-23'),
     updatedAt: new Date('2020-6-23'),
   },
   {
     id: uuidv4(),
     title: 'Mart note',
-    content: '',
+    content: 'Lorem ipsum #dolor, consectetur adipisicing elit. Unde, earum!',
     createdAt: new Date('2019-6-23'),
     updatedAt: new Date('2019-6-23'),
   },

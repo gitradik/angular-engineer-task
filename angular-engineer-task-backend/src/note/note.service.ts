@@ -18,23 +18,25 @@ export class NotesService {
   }
 
   async getNotes(query: NoteQuery): Promise<Response<NoteDto[]>> {
-    if (query.searchValue) {
-      return getResponse<NoteDto[]>(
-        notesArr
-          .filter((note: NoteDto) =>
-            note.title.toLowerCase().includes(query.searchValue.toLowerCase()),
-          )
-          .sort(this.sortCb),
+    let notes = notesArr;
+
+    if (query.searchValue && query.tagValue) {
+      notes = notesArr.filter(
+        (note: NoteDto) =>
+          note.content.includes(query.tagValue) &&
+          note.title.toLowerCase().includes(query.searchValue.toLowerCase()),
+      );
+    } else if (query.searchValue) {
+      notes = notesArr.filter((note: NoteDto) =>
+        note.title.toLowerCase().includes(query.searchValue.toLowerCase()),
       );
     } else if (query.tagValue) {
-      return getResponse<NoteDto[]>(
-        notesArr
-          .filter((note: NoteDto) => note.content.includes(query.tagValue))
-          .sort(this.sortCb),
+      notes = notesArr.filter((note: NoteDto) =>
+        note.content.includes(query.tagValue),
       );
     }
 
-    return getResponse<NoteDto[]>(notesArr.sort(this.sortCb));
+    return getResponse<NoteDto[]>(notes.sort(this.sortCb));
   }
 
   async createNote(payload: NoteDto): Promise<Response<NoteDto>> {

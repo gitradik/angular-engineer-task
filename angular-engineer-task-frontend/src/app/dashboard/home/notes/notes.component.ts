@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, take, takeUntil } from 'rxjs';
 import {
   Note,
   NotesService,
@@ -16,12 +16,13 @@ import { WorkspaceChange } from './note-workspace/note-workspace.component';
 })
 export class NotesComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<boolean>();
-  private readonly event = 'notes';
+  private readonly wsEvent = 'notes';
   private readonly newNoteTitle = 'New note';
   notes$!: Observable<Note[]>;
   selectedNote$!: Observable<Note | null>;
   tags$!: Observable<Tag[]>;
   selectedTag$!: Observable<Tag | null>;
+  private searchValue$ = new BehaviorSubject<string | null>(null);
 
   constructor(
     private notesService: NotesService,
@@ -36,22 +37,33 @@ export class NotesComponent implements OnInit, OnDestroy {
       .getMessages<Note>()
       .pipe(takeUntil(this.destroy$))
       .subscribe((msg) => {
-        if (msg.event === this.event) {
+        if (msg.event === this.wsEvent) {
           this.notesService.updateNote(msg.data);
           this.tagsService.fetchTags();
         }
       });
     this.selectedTag$.pipe(takeUntil(this.destroy$)).subscribe((tag) => {
       if (tag !== null) {
-        this.notesService.fetchNotes({ tagValue: tag.value });
+        this.notesService.fetchNotes({
+          tagValue: tag.value,
+          searchValue: this.searchValue$.value || '',
+        });
       } else {
-        this.notesService.fetchNotes();
+        this.notesService.fetchNotes({
+          searchValue: this.searchValue$.value || '',
+        });
       }
     });
   }
 
   handlechangeFilter(value: string) {
-    this.notesService.fetchNotes({ searchValue: value });
+    this.searchValue$.next(value);
+    this.selectedTag$.pipe(take(1)).subscribe((tag) => {
+      this.notesService.fetchNotes({
+        searchValue: value || '',
+        tagValue: tag !== null ? tag.value : '',
+      });
+    });
   }
   handleCreateNote() {
     this.notesService.createNote(this.newNoteTitle);
@@ -63,7 +75,7 @@ export class NotesComponent implements OnInit, OnDestroy {
     this.selectedNote$.pipe(take(1)).subscribe((obj: Note | null) => {
       if (obj) {
         this.wsService.sendMessage<NoteWsMessage>({
-          event: this.event,
+          event: this.wsEvent,
           data: {
             id: obj.id,
             field,
