@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, take } from 'rxjs';
-import { Note, NoteService, NoteWsMessage } from '@app/core/services/api/notes.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { Note, NotesService, NoteWsMessage } from '@app/core/services/notes.service';
 import { WebsocketService } from '@app/core/services/websocket.service';
+import { Tag, TagsService } from '@app/core/services/tags.service';
 import { WorkspaceChange } from './note-workspace/note-workspace.component';
 
 @Component({
@@ -9,55 +10,83 @@ import { WorkspaceChange } from './note-workspace/note-workspace.component';
   templateUrl: './notes.component.html',
   styleUrls: ['./notes.component.scss']
 })
-export class NotesComponent implements OnInit {
+export class NotesComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<boolean>();
   private readonly event = 'notes';
   private readonly newNoteTitle = 'New note';
   notes$!: Observable<Note[]>;
   selectedNote$!: Observable<Note | null>;
+  tags$!: Observable<Tag[]>;
+  selectedTag$!: Observable<Tag | null>;
 
   constructor(
-    private noteService: NoteService,
+    private notesService: NotesService,
+    private tagsService: TagsService,
     private wsService: WebsocketService
   ) {
-    this.notes$ = this.noteService.notes$;
-    this.selectedNote$ = this.noteService.selectedNote$;
-    this.wsService.getMessages<Note>().subscribe(msg => {
-      if (msg.event === this.event) {
-        this.noteService.updateNote(msg.data);
-      }
-    })
+    this.notes$ = this.notesService.notes$;
+    this.selectedNote$ = this.notesService.selectedNote$;
+    this.tags$ = this.tagsService.tags$;
+    this.selectedTag$ = this.tagsService.selectedTag$;
+    this.wsService.getMessages<Note>()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(msg => {
+        if (msg.event === this.event) {
+          this.notesService.updateNote(msg.data);
+          this.tagsService.fetchTags();
+        }
+      });
+      this.selectedTag$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(tag => {
+          if (tag !== null) {
+            this.notesService.fetchNotes({ tagValue: tag.value });
+          } else {
+            this.notesService.fetchNotes();
+          }
+        })
   }
 
   handlechangeFilter(value: string) {
-    this.noteService.fetchNotes(value);
+    this.notesService.fetchNotes({ searchValue: value });
   }
   handleCreateNote() {
-    this.noteService.createNote(this.newNoteTitle);
+    this.notesService.createNote(this.newNoteTitle);
   }
   handleChangeNote({ value, field }: WorkspaceChange) {
-    if (value && field) {
-      this.selectedNote$.pipe(take(1)).subscribe((obj: Note | null) => {
-        if (obj) {
-          this.wsService.sendMessage<NoteWsMessage>({
-            event: this.event,
-            data: {
-              id: obj.id,
-              field,
-              value
-            }
-          });
-        }
-      });
-    }
+    if (!field) return;
+    else if (field === 'title' && !value) return;
+
+    this.selectedNote$.pipe(take(1)).subscribe((obj: Note | null) => {
+      if (obj) {
+        this.wsService.sendMessage<NoteWsMessage>({
+          event: this.event,
+          data: {
+            id: obj.id,
+            field,
+            value
+          }
+        });
+      }
+    });
   }
   handleRemoveNote(id: string) {
-    this.noteService.deleteNote(id);
+    this.notesService.deleteNote(id);
   }
   handleSelectionNote(id: string) {
-    this.noteService.setSelectedNote(id);
+    this.notesService.setSelectedNote(id);
+  }
+  handleSelectionTag(id: string) {
+    this.tagsService.setSelectedTag(id);
   }
 
   ngOnInit(): void {
-    this.noteService.fetchNotes('');
+    this.notesService.fetchNotes();
+    this.tagsService.fetchTags();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 }

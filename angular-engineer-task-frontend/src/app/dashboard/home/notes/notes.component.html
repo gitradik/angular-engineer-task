@@ -15,7 +15,11 @@
         ></app-notes-list>
       </div>
       <div class="notes-col-footer">
-        notes-col-footer
+        <app-notes-tags
+          [data]="tags$"
+          [selected]="selectedTag$"
+          (selection)="handleSelectionTag($event)"
+        ></app-notes-tags>
       </div>
     </div>
   </mat-grid-tile>

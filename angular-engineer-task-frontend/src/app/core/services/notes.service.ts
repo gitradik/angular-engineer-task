@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { BaseAPIService, Response } from './base-api-service.class';
+import { BaseAPIService, Response } from './api/base-api-service.class';
 
 export interface Note {
   id: string;
@@ -11,6 +11,11 @@ export interface Note {
   updatedAt: Date;
 }
 
+export interface NoteQuery {
+  searchValue?: string;
+  tagValue?: string;
+}
+
 export type NoteWsMessage = {
   id: string;
   field: string;
@@ -18,7 +23,7 @@ export type NoteWsMessage = {
 };
 
 @Injectable()
-export class NoteService extends BaseAPIService {
+export class NotesService extends BaseAPIService {
   private readonly url = 'notes';
   override errorMessage: string = 'Notes error';
 
@@ -52,8 +57,8 @@ export class NoteService extends BaseAPIService {
     }
   }
 
-  fetchNotes(value?: string) {
-    this.get<Note[]>(this.url, { searchValue: value || '' })
+  fetchNotes(query: NoteQuery = { searchValue: '', tagValue: '' }) {
+    this.get<Note[]>(this.url, query)
       .subscribe(result => this.notes.next(result.data));
   }
 

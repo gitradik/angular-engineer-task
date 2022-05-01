@@ -9,7 +9,7 @@ export type WorkspaceChange = {
 
 @Component({ template: '' })
 export class NoteWorkspace implements OnInit, OnDestroy, OnChanges {
-  destroy$ = new Subject<boolean>();
+  private destroy$ = new Subject<boolean>();
   form!: FormGroup;
   
   @Input() value?: string | null;
@@ -34,9 +34,7 @@ export class NoteWorkspace implements OnInit, OnDestroy, OnChanges {
     const control = this.getControl();
     const options = { emitEvent: false };  
 
-    if (changeValue) {
-      control.setValue(changeValue.currentValue, options);
-    }
+    control.setValue(changeValue.currentValue, options);
     if (disabled && disabled.currentValue) {
       control.disable(options);
     } else {

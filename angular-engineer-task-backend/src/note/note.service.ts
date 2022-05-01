@@ -5,11 +5,12 @@ import { NoteDto } from 'src/dto/note.dto';
 import { getResponse, Response } from 'src/utils/httpResponse';
 
 export interface NoteQuery {
-  searchValue: string;
+  searchValue?: string;
+  tagValue?: string;
 }
 
 @Injectable()
-export class NoteService {
+export class NotesService {
   constructor() {}
 
   private sortCb(a: NoteDto, b: NoteDto) {
@@ -18,13 +19,17 @@ export class NoteService {
 
   async getNotes(query: NoteQuery): Promise<Response<NoteDto[]>> {
     if (query.searchValue) {
-      return Promise.resolve(getResponse<NoteDto[]>(notesArr.filter((note: NoteDto) =>
+      return getResponse<NoteDto[]>(notesArr.filter((note: NoteDto) =>
         note.title.toLowerCase()
           .includes(query.searchValue.toLowerCase())
-        ).sort(this.sortCb)));
+        ).sort(this.sortCb));
+    } else if (query.tagValue) {
+      return getResponse<NoteDto[]>(notesArr.filter((note: NoteDto) =>
+          note.content.includes(query.tagValue)
+        ).sort(this.sortCb));
     }
 
-    return Promise.resolve(getResponse<NoteDto[]>(notesArr.sort(this.sortCb)));
+    return getResponse<NoteDto[]>(notesArr.sort(this.sortCb));
   }
 
   async createNote(payload: NoteDto): Promise<Response<NoteDto>> {
@@ -35,7 +40,7 @@ export class NoteService {
       updatedAt: new Date(),
     };
     notesArr.unshift(newNote);
-    return Promise.resolve(getResponse<NoteDto>(newNote));
+    return getResponse<NoteDto>(newNote);
   }
 
   async removeNote(id: string): Promise<Response<string>> {
@@ -48,7 +53,7 @@ export class NoteService {
       }, HttpStatus.NOT_FOUND);
     } else {
       notesArr.splice(idx, 1);
-      return Promise.resolve(getResponse<string>(id));
+      return getResponse<string>(id);
     }
   }
 

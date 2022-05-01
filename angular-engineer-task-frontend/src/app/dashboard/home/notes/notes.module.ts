@@ -7,17 +7,18 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatListModule } from '@angular/material/list';
+import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { WebsocketService } from '@app/core/services/websocket.service';
-import { NoteService } from '@app/core/services/api/notes.service';
+import { NotesService } from '@app/core/services/notes.service';
 import { NotesComponent } from './notes.component';
 import { NotesListComponent } from './notes-list/notes-list.component';
 import { NotesActionsComponent } from './notes-actions/notes-actions.component';
 import { NotesTagsComponent } from './notes-tags/notes-tags.component';
-import { NotesTagComponent } from './notes-tags/notes-tag/notes-tag.component';
 import { NoteWorkspaceTitleComponent } from './note-workspace/note-workspace-title/note-workspace-title.component';
 import { NoteWorkspaceContentComponent } from './note-workspace/note-workspace-content/note-workspace-content.component';
+import { TagsService } from '@app/core/services/tags.service';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { NoteWorkspaceContentComponent } from './note-workspace/note-workspace-c
     MatIconModule,
     MatTooltipModule,
     MatListModule,
+    MatChipsModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
@@ -40,10 +42,13 @@ import { NoteWorkspaceContentComponent } from './note-workspace/note-workspace-c
     NotesListComponent,
     NotesActionsComponent,
     NotesTagsComponent,
-    NotesTagComponent,
     NoteWorkspaceTitleComponent,
     NoteWorkspaceContentComponent,
   ],
-  providers: [NoteService, WebsocketService]
+  providers: [
+    NotesService,
+    TagsService,
+    WebsocketService
+  ]
 })
 export class NotesModule { }

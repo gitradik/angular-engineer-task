@@ -8,4 +8,16 @@
   form {
     height: calc(100% - $standard-padding);
   }
+  .content-html {
+    height: calc(100% - ($standard-padding + 8px));
+    border: 1px solid rgba(0,0,0,.1);
+    border-radius: 5px;
+    margin-top: 3.5px;
+    margin-bottom: 3.5px;
+    div {
+      padding-top: 17px;
+      padding-left: 8px;
+    }
+  }
+
 }

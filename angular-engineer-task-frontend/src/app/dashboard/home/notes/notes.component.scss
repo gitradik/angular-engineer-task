@@ -1,9 +1,5 @@
 @import 'variables';
 
-mat-grid-tile {
-  border: 1px solid $color-tuna;
-}
-
 .notes-col {
   display: flex;
   flex-direction: column;
@@ -18,6 +14,8 @@ mat-grid-tile {
     height: 100%;
   }
   .notes-col-footer {
-
+    min-height: 52px;
+    max-height: 110px;
+    overflow-y: auto;
   }
 }
