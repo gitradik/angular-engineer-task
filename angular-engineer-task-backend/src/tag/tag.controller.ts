@@ -3,7 +3,7 @@ import { TagDto } from 'src/dto/tag.dto';
 import { TagService } from './tag.service';
 import { Response } from 'src/utils/httpResponse';
 
-@Controller('tag')
+@Controller('tags')
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 

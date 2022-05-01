@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatSelectionList, MatSelectionListChange } from '@angular/material/list';
 import { Observable } from 'rxjs';
-import { Note } from '@app/core/services/api/notes.service';
+import { Note } from '@app/core/services/notes.service';
 
 @Component({
   selector: 'app-notes-list',

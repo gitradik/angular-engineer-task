@@ -11,6 +11,7 @@ import { Observable, of } from 'rxjs';
 
 import { notesArr } from 'src/db/notes.db';
 import { NoteDto } from 'src/dto/note.dto';
+import { TagService } from 'src/tag/tag.service';
 
 export type Message = {
   id: string;
@@ -25,8 +26,10 @@ export class NotesGateway {
   @WebSocketServer()
   server: Server;
 
+  constructor(private tagService: TagService) {}
+
   @SubscribeMessage(event)
-  onMessage(@MessageBody() data: Message): Observable<WsResponse<NoteDto>> {
+  async onMessage(@MessageBody() data: Message): Promise<WsResponse<NoteDto>> {
     if (data.id && typeof data.id === 'string') {
       const note = notesArr.find(n => n.id === data.id);
 
@@ -35,10 +38,11 @@ export class NotesGateway {
         note.updatedAt = new Date();
 
         if (data.field === 'content') {
-          
+          const tags = await this.tagService.getTagsFromText(data.value);
+          await this.tagService.addTags(tags);
         }
 
-        return of({ event, data: note });
+        return { event, data: note };
       }
     }
 

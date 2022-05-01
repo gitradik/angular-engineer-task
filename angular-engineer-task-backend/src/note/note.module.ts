@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
+import { TagService } from 'src/tag/tag.service';
 import { NoteController } from './note.controller';
 import { NotesGateway } from './note.gateway';
-import { NoteService } from './note.service';
+import { NotesService } from './note.service';
 
 @Module({
   controllers: [NoteController],
-  providers: [NoteService, NotesGateway]
+  providers: [NotesService, NotesGateway, TagService]
 })
 export class NoteModule {}
