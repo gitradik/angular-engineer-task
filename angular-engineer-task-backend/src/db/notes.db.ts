@@ -1,13 +1,13 @@
 import { v4 as uuidv4 } from 'uuid';
 import { NoteDto } from 'src/dto/note.dto';
 
-export let notesArr: NoteDto[] = [
+export const notesArr: NoteDto[] = [
   {
     id: uuidv4(),
     title: 'First note',
-    content: '',
-    createdAt: new Date('2019-6-22'),
-    updatedAt: new Date('2019-7-14'),
+    content: 'Lorem ipsum #dolor sit #amet, consectetur adipisicing elit. Unde, earum!',
+    createdAt: new Date('2022-1-22'),
+    updatedAt: new Date('2022-4-24'),
   },
   {
     id: uuidv4(),

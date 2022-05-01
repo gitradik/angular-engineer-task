@@ -7,7 +7,7 @@ export interface Response<T> {
 }
 
 export class BaseAPIService {
-  baseApiUrl = environment.apiUrl;
+  private baseApiUrl = environment.apiUrl;
   errorMessage = "Some Error occcured";
 
   constructor(public http: HttpClient) {}
@@ -45,22 +45,4 @@ export class BaseAPIService {
       complete: () => observer.complete(), 
     }));
   }
-
-
-  // post(url: string, body: object): Observable<Responses[]> {
-  //   let response = this.http
-  //     .post<Responses>(url, body);
-
-  //   return Observable.create((observer: Observer) => {
-  //     response.subscribe(res => {
-  //       if (res.errors.length > 0)
-  //         observer.error(res.errors);
-  //       else
-  //         observer.next(res.success);
-  //       observer.complete();
-  //     }, error => {
-  //       observer.error([{ title: error.name, detail: this.errorMessage, error }]);
-  //     });
-  //   });
-  // }
 }
