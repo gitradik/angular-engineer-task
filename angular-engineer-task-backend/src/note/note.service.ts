@@ -19,14 +19,19 @@ export class NotesService {
 
   async getNotes(query: NoteQuery): Promise<Response<NoteDto[]>> {
     if (query.searchValue) {
-      return getResponse<NoteDto[]>(notesArr.filter((note: NoteDto) =>
-        note.title.toLowerCase()
-          .includes(query.searchValue.toLowerCase())
-        ).sort(this.sortCb));
+      return getResponse<NoteDto[]>(
+        notesArr
+          .filter((note: NoteDto) =>
+            note.title.toLowerCase().includes(query.searchValue.toLowerCase()),
+          )
+          .sort(this.sortCb),
+      );
     } else if (query.tagValue) {
-      return getResponse<NoteDto[]>(notesArr.filter((note: NoteDto) =>
-          note.content.includes(query.tagValue)
-        ).sort(this.sortCb));
+      return getResponse<NoteDto[]>(
+        notesArr
+          .filter((note: NoteDto) => note.content.includes(query.tagValue))
+          .sort(this.sortCb),
+      );
     }
 
     return getResponse<NoteDto[]>(notesArr.sort(this.sortCb));
@@ -45,16 +50,18 @@ export class NotesService {
 
   async removeNote(id: string): Promise<Response<string>> {
     const idx = notesArr.findIndex((note: NoteDto) => note.id === id);
-    
+
     if (idx === -1) {
-      throw new HttpException({
-        status: HttpStatus.NOT_FOUND,
-        error: 'Note not found',
-      }, HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Note not found',
+        },
+        HttpStatus.NOT_FOUND,
+      );
     } else {
       notesArr.splice(idx, 1);
       return getResponse<string>(id);
     }
   }
-
 }

@@ -5,7 +5,8 @@ export const notesArr: NoteDto[] = [
   {
     id: uuidv4(),
     title: 'First note',
-    content: 'Lorem ipsum #dolor sit #amet, consectetur adipisicing elit. Unde, earum!',
+    content:
+      'Lorem ipsum #dolor sit #amet, consectetur adipisicing elit. Unde, earum!',
     createdAt: new Date('2022-1-22'),
     updatedAt: new Date('2022-4-24'),
   },

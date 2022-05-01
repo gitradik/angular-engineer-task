@@ -31,7 +31,7 @@ export class NotesGateway {
   @SubscribeMessage(event)
   async onMessage(@MessageBody() data: Message): Promise<WsResponse<NoteDto>> {
     if (data.id && typeof data.id === 'string') {
-      const note = notesArr.find(n => n.id === data.id);
+      const note = notesArr.find((n) => n.id === data.id);
 
       if (note) {
         note[data.field] = data.value;

@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { NoteDto } from 'src/dto/note.dto';
 import { Response } from 'src/utils/httpResponse';
 import { NoteQuery, NotesService } from './note.service';

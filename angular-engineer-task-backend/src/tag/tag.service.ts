@@ -28,13 +28,15 @@ export class TagService {
   }
 
   async addTags(values: string[]): Promise<void> {
-    values.filter(v => tagsArr.findIndex(tag => tag.value.includes(v)) === -1).forEach(v => {
-      tagsArr.push({
-        id: uuidv4(),
-        value: `#${v}`,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+    values
+      .filter((v) => tagsArr.findIndex((tag) => tag.value.includes(v)) === -1)
+      .forEach((v) => {
+        tagsArr.push({
+          id: uuidv4(),
+          value: `#${v}`,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
       });
-    })
   }
 }
