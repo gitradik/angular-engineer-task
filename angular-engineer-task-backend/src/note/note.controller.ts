@@ -9,14 +9,14 @@ import {
 } from '@nestjs/common';
 import { NoteDto } from 'src/dto/note.dto';
 import { Response } from 'src/utils/httpResponse';
-import { NoteQuery, NotesService } from './note.service';
+import { NotesQuery, NotesService } from './note.service';
 
 @Controller('notes')
 export class NoteController {
   constructor(private readonly notesService: NotesService) {}
 
   @Get('/')
-  getAll(@Query() query: NoteQuery): Promise<Response<NoteDto[]>> {
+  getAll(@Query() query: NotesQuery): Promise<Response<NoteDto[]>> {
     return this.notesService.getNotes(query);
   }
   @Post('/create')

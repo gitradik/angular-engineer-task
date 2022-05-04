@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { BaseAPIService, Response } from './api/base-api-service.class';
 
 export interface Note {
@@ -11,7 +11,7 @@ export interface Note {
   updatedAt: Date;
 }
 
-export interface NoteQuery {
+export interface NotesQuery {
   searchValue?: string;
   tagValue?: string;
 }
@@ -46,6 +46,9 @@ export class NotesService extends BaseAPIService {
   }
 
   updateNote(data: Note) {
+    if (this.selectedNote.value && this.selectedNote.value.id === data.id) {
+      this.selectedNote.next(data);
+    }
     this.notes.next(
       this.notes.value
         .map((n) => (n.id === data.id ? data : n))
@@ -61,7 +64,7 @@ export class NotesService extends BaseAPIService {
     }
   }
 
-  fetchNotes(query: NoteQuery = { searchValue: '', tagValue: '' }) {
+  fetchNotes(query: NotesQuery = { searchValue: '', tagValue: '' }) {
     this.get<Note[]>(this.url, query).subscribe((result) =>
       this.notes.next(result.data)
     );

@@ -4,7 +4,7 @@ import { notesArr } from 'src/db/notes.db';
 import { NoteDto } from 'src/dto/note.dto';
 import { getResponse, Response } from 'src/utils/httpResponse';
 
-export interface NoteQuery {
+export interface NotesQuery {
   searchValue?: string;
   tagValue?: string;
 }
@@ -17,7 +17,7 @@ export class NotesService {
     return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
   }
 
-  async getNotes(query: NoteQuery): Promise<Response<NoteDto[]>> {
+  async getNotes(query: NotesQuery): Promise<Response<NoteDto[]>> {
     let notes = notesArr;
 
     if (query.searchValue && query.tagValue) {
