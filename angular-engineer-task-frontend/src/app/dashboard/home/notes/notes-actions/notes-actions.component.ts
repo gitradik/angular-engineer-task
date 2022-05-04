@@ -23,7 +23,7 @@ export class NotesActionsComponent implements OnInit, OnDestroy {
 
   constructor() {
     this.form = new FormGroup({
-      [this.controlName]: new FormControl(null),
+      [this.controlName]: new FormControl(''),
     });
   }
 
@@ -32,14 +32,14 @@ export class NotesActionsComponent implements OnInit, OnDestroy {
   }
 
   resetFilterString() {
-    this.getFilterStringControl().reset();
+    this.getFilterStringControl().setValue('');
   }
 
   ngOnInit(): void {
     this.getFilterStringControl()
       .valueChanges.pipe(takeUntil(this.destroy$))
       .pipe(debounceTime(300))
-      .subscribe((value) => {
+      .subscribe((value: string) => {
         this.changeFilter.emit(value);
       });
   }

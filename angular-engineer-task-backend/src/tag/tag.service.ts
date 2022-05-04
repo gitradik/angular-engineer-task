@@ -29,7 +29,7 @@ export class TagService {
 
   async addTags(values: string[]): Promise<void> {
     values
-      .filter((v) => tagsArr.findIndex((tag) => tag.value.includes(v)) === -1)
+      .filter((v) => tagsArr.findIndex((tag) => tag.value.endsWith(v)) === -1)
       .forEach((v) => {
         tagsArr.push({
           id: uuidv4(),

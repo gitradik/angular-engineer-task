@@ -27,7 +27,7 @@ export class NoteWorkspace implements OnInit, OnDestroy, OnChanges {
   private destroy$ = new Subject<boolean>();
   form!: FormGroup;
 
-  @Input() value?: string | null;
+  @Input() value?: string;
   @Input() disabled!: boolean;
   @Output() change = new EventEmitter<WorkspaceChange>();
 
@@ -64,7 +64,7 @@ export class NoteWorkspace implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.getControl()
       .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe((value) => {
+      .subscribe((value: string) => {
         this.change.emit({ value, field: this.controlName });
       });
   }

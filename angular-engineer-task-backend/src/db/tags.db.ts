@@ -14,4 +14,10 @@ export const tagsArr: TagDto[] = [
     createdAt: new Date('2022-1-22'),
     updatedAt: new Date('2022-4-24'),
   },
+  {
+    id: uuidv4(),
+    value: '#earum',
+    createdAt: new Date('2019-6-23'),
+    updatedAt: new Date('2019-6-23'),
+  },
 ];

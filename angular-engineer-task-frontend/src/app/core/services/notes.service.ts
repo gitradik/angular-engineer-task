@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
-import { BaseAPIService, Response } from './api/base-api-service.class';
+import { map, Observable } from 'rxjs';
+import { BaseAPIService } from './api/base-api-service.class';
 
 export interface Note {
   id: string;
@@ -27,68 +27,25 @@ export class NotesService extends BaseAPIService {
   private readonly url = 'notes';
   override errorMessage: string = 'Notes error';
 
-  private notes = new BehaviorSubject<Note[]>([]);
-  private selectedNote = new BehaviorSubject<Note | null>(null);
-
-  get notes$(): Observable<Note[]> {
-    return this.notes.asObservable();
-  }
-  get selectedNote$(): Observable<Note | null> {
-    return this.selectedNote.asObservable();
-  }
-
   constructor(override http: HttpClient) {
     super(http);
   }
 
-  private sortCb(a: Note, b: Note) {
-    return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-  }
-
-  updateNote(data: Note) {
-    if (this.selectedNote.value && this.selectedNote.value.id === data.id) {
-      this.selectedNote.next(data);
-    }
-    this.notes.next(
-      this.notes.value
-        .map((n) => (n.id === data.id ? data : n))
-        .sort(this.sortCb)
-    );
-  }
-
-  setSelectedNote(id: string) {
-    const note = this.notes.getValue().find((n) => n.id === id);
-
-    if (note) {
-      this.selectedNote.next(note);
-    }
-  }
-
-  fetchNotes(query: NotesQuery = { searchValue: '', tagValue: '' }) {
-    this.get<Note[]>(this.url, query).subscribe((result) =>
-      this.notes.next(result.data)
+  fetchNotes(
+    query: NotesQuery = { searchValue: '', tagValue: '' }
+  ): Observable<Note[]> {
+    return this.get<Note[]>(this.url, query).pipe(
+      map((response) => response.data)
     );
   }
 
   createNote(title: string) {
-    this.post<Note>(`${this.url}/create`, { title, content: '' }).subscribe(
-      ({ data }: Response<Note>) => {
-        this.notes.next([data].concat(this.notes.getValue()));
-      }
+    return this.post<Note>(`${this.url}/create`, { title, content: '' }).pipe(
+      map((response) => response.data)
     );
   }
 
   deleteNote(id: string) {
-    this.delete(this.url, id).subscribe(
-      ({ data: noteId }: Response<string>) => {
-        if (noteId === id) {
-          this.selectedNote.next(null);
-        }
-
-        this.notes.next(
-          this.notes.getValue().filter((note: Note) => note.id !== noteId)
-        );
-      }
-    );
+    return this.delete(this.url, id).pipe(map((response) => response.data));
   }
 }
