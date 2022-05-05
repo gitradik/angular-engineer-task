@@ -7,7 +7,7 @@
           (create)="handleCreateNote()"
         ></app-notes-actions>
       </div>
-      <div class="notes-col-body">
+      <div class="notes-col-body notes-col-notes-list">
         <app-notes-list
           [data]="notes$"
           (remove)="handleRemoveNote($event)"
