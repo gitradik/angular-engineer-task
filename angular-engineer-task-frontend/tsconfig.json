@@ -15,7 +15,7 @@
     "downlevelIteration": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
-    "importHelpers": true,
+    "importHelpers": false,
     "target": "es2017",
     "module": "es2020",
     "lib": [
@@ -23,10 +23,7 @@
       "dom"
     ],
     "paths": {
-      "@app/*": ["./app/*"],
-      "@views/*": ["./app/views/*"],
-      "@services/*": ["./app/services/*"],
-      "@shared/*": ["./app/shared/*"]
+      "@app/*": ["./app/*"]
     }
   },
   "angularCompilerOptions": {

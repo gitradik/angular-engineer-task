@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { BaseAPIService } from './api/base-api-service.class';
+import { BaseAPIService, Response } from './api/base-api-service.class';
 
 export interface Note {
   id: string;
@@ -35,17 +35,19 @@ export class NotesService extends BaseAPIService {
     query: NotesQuery = { searchValue: '', tagValue: '' }
   ): Observable<Note[]> {
     return this.get<Note[]>(this.url, query).pipe(
-      map((response) => response.data)
+      map((response: Response<Note[]>) => response.data)
     );
   }
 
   createNote(title: string) {
     return this.post<Note>(`${this.url}/create`, { title, content: '' }).pipe(
-      map((response) => response.data)
+      map((response: Response<Note>) => response.data)
     );
   }
 
   deleteNote(id: string) {
-    return this.delete(this.url, id).pipe(map((response) => response.data));
+    return this.delete(this.url, id).pipe(
+      map((response: Response<string>) => response.data)
+    );
   }
 }
