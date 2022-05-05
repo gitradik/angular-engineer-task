@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { BaseAPIService } from './api/base-api-service.class';
+import { BaseAPIService, Response } from './api/base-api-service.class';
 
 export interface Tag {
   id: string;
@@ -20,6 +20,8 @@ export class TagsService extends BaseAPIService {
   }
 
   fetchTags(): Observable<Tag[]> {
-    return this.get<Tag[]>(this.url).pipe(map((response) => response.data));
+    return this.get<Tag[]>(this.url).pipe(
+      map((response: Response<Tag[]>) => response.data)
+    );
   }
 }

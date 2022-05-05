@@ -21,8 +21,8 @@ export class BaseAPIService {
 
     return new Observable((observer: Observer<Response<T>>) =>
       response.subscribe({
-        next: (v) => observer.next(v),
-        error: (e) => observer.error(e),
+        next: (v: Response<T>) => observer.next(v),
+        error: (e: any) => observer.error(e),
         complete: () => observer.complete(),
       })
     );
@@ -36,8 +36,8 @@ export class BaseAPIService {
 
     return new Observable((observer: Observer<Response<T>>) =>
       response.subscribe({
-        next: (v) => observer.next(v),
-        error: (e) => observer.error(e),
+        next: (v: Response<T>) => observer.next(v),
+        error: (e: any) => observer.error(e),
         complete: () => observer.complete(),
       })
     );
@@ -50,8 +50,8 @@ export class BaseAPIService {
 
     return new Observable((observer: Observer<Response<string>>) =>
       response.subscribe({
-        next: (v) => observer.next(v),
-        error: (e) => observer.error(e),
+        next: (v: Response<string>) => observer.next(v),
+        error: (e: any) => observer.error(e),
         complete: () => observer.complete(),
       })
     );

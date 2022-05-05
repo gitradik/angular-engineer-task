@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { NotesService } from '@app/core/services/notes.service';
+import { Note, NotesService } from '@app/core/services/notes.service';
 import * as NotesActions from './notes.actions';
 import { AppState } from '..';
 
@@ -20,7 +20,7 @@ export class NotesEffects {
       ofType(NotesActions.ActionTypes.FetchNotesBegin),
       switchMap((action: NotesActions.FetchNotesBegin) => {
         return this.notesService.fetchNotes(action.payload?.query).pipe(
-          map((data) => new NotesActions.FetchNotesSuccess({ data })),
+          map((data: Note[]) => new NotesActions.FetchNotesSuccess({ data })),
           catchError((error) =>
             of(new NotesActions.FetchNotesFailure({ error }))
           )
@@ -40,7 +40,7 @@ export class NotesEffects {
         ]) => {
           return this.notesService.createNote(action.payload.title).pipe(
             map(
-              (data) =>
+              (data: Note) =>
                 new NotesActions.CreateNoteSuccess({
                   data:
                     storeState.tags.selectedTag || storeState.search.searchValue
@@ -62,7 +62,7 @@ export class NotesEffects {
       ofType(NotesActions.ActionTypes.DeleteNoteBegin),
       switchMap((action: NotesActions.DeleteNoteBegin) => {
         return this.notesService.deleteNote(action.payload.id).pipe(
-          map((data) => new NotesActions.DeleteNoteSuccess({ data })),
+          map((data: string) => new NotesActions.DeleteNoteSuccess({ data })),
           catchError((error) =>
             of(new NotesActions.DeleteNoteFailure({ error }))
           )
